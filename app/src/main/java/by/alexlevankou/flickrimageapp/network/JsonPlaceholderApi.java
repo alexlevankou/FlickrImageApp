@@ -6,7 +6,7 @@ import by.alexlevankou.flickrimageapp.model.Post;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
-public interface PlaceholderService {
+public interface JsonPlaceholderApi {
     @GET("/posts")
     Call<List<Post>> getPosts();
 }

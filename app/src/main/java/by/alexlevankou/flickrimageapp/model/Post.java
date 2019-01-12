@@ -3,13 +3,24 @@ package by.alexlevankou.flickrimageapp.model;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 @Entity
 public class Post {
 
     @PrimaryKey
+    @SerializedName("id")
+    @Expose
     private int id;
+    @SerializedName("userId")
+    @Expose
     private int userId;
+    @SerializedName("title")
+    @Expose
     private String title;
+    @SerializedName("body")
+    @Expose
     private String body;
 
     public int getId() {

@@ -2,7 +2,6 @@ package by.alexlevankou.flickrimageapp.network;
 
 import android.support.annotation.NonNull;
 
-import by.alexlevankou.flickrimageapp.BuildConfig;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -11,30 +10,31 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public final class ApiFactory {
 
     private static OkHttpClient sClient;
-    private static volatile PlaceholderService sPlaceholderService;
+    private static volatile JsonPlaceholderApi sPlaceholderApi;
+    private static final String BASE_URL = "https://jsonplaceholder.typicode.com";
 
     private ApiFactory() {
     }
 
     @NonNull
-    public static PlaceholderService getPlaceholderService() {
-        PlaceholderService service = sPlaceholderService;
-        if (service == null) {
+    public static JsonPlaceholderApi getPlaceholderService() {
+        JsonPlaceholderApi api = sPlaceholderApi;
+        if (api == null) {
             synchronized (ApiFactory.class) {
-                service = sPlaceholderService;
-                if (service == null) {
-                    service = sPlaceholderService = buildRetrofit().create(PlaceholderService.class);
+                api = sPlaceholderApi;
+                if (api == null) {
+                    api = sPlaceholderApi = buildRetrofit().create(JsonPlaceholderApi.class);
                 }
             }
         }
-        return service;
+        return api;
     }
 
     @NonNull
     private static Retrofit buildRetrofit() {
         return new Retrofit.Builder()
-                .baseUrl(BuildConfig.API_JSONPLACEHOLDER)
-                .client(getClient())
+                .baseUrl(BASE_URL)
+                //.client(getClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

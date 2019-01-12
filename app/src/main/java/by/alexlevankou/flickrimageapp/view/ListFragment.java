@@ -1,5 +1,6 @@
 package by.alexlevankou.flickrimageapp.view;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,7 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Date;
+import java.util.List;
+
 import by.alexlevankou.flickrimageapp.R;
+import by.alexlevankou.flickrimageapp.model.Post;
 import by.alexlevankou.flickrimageapp.viewModel.ListViewModel;
 
 public class ListFragment extends Fragment {
@@ -30,8 +35,13 @@ public class ListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ListViewModel.class);
-        //mViewModel
-        // TODO: Use the ViewModel
+        mViewModel.getAllPosts().observe(getActivity(), new Observer<List<Post>>() {
+            @Override
+            public void onChanged(@Nullable List<Post> posts) {
+                if(posts != null) {
+                    boolean f = true;
+                }
+            }
+        });
     }
-
 }
