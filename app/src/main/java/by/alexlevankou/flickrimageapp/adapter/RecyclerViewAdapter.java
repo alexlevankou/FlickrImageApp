@@ -5,23 +5,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import by.alexlevankou.flickrimageapp.R;
+import by.alexlevankou.flickrimageapp.model.Post;
+import by.alexlevankou.flickrimageapp.view.ListFragment;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    List<Integer> values;
-    //private final OnListFragmentInteractionListener mListener;
+    private List<Post> values;
+    private final ListFragment.OnListFragmentInteractionListener mListener;
 
-    public RecyclerViewAdapter(Context context/*, OnListFragmentInteractionListener listener*/) {
-
-        //mListener = listener;
+    public RecyclerViewAdapter(Context context, ListFragment.OnListFragmentInteractionListener listener) {
+        mListener = listener;
+        values = new ArrayList<>();
     }
 
-    public void setItems(List<Integer> items)
+    public void setItems(List<Post> items)
     {
         values = items;
         notifyDataSetChanged();
@@ -36,16 +40,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.item = values.get(position);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    //mListener.onListFragmentInteraction(holder.item.getId());
-                //}
+                if (null != mListener) {
+                    mListener.onListFragmentInteraction(holder.item.getId());
+                }
             }
         });
+        holder.titleText.setText(holder.item.getTitle());
+        holder.bodyText.setText(holder.item.getBody());
     }
 
     @Override
@@ -54,15 +58,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        final View itemView;
+        final View view;
+        final TextView titleText;
+        final TextView bodyText;
         //final ImageView image;
-        //final TextView urlText;
-        //final TextView nameText;
-        Integer item;
+        Post item;
 
         ViewHolder(View view) {
             super(view);
-            itemView = view;
+            this.view = view;
+            titleText = view.findViewById(R.id.title);
+            bodyText = view.findViewById(R.id.body);
         }
     }
 }
