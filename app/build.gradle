@@ -17,7 +17,8 @@ android {
         }
 
         buildConfigField "String", "API_JSONPLACEHOLDER", '"https://jsonplaceholder.typicode.com"'
-        buildConfigField "String", "API_KEY", '"bc0ffae33833bd4d0214451ff2c0d4be"'
+        buildConfigField "String", "FLICKR_API", '"https://api.flickr.com"'
+        buildConfigField "String", "FLICKR_KEY", '"534ddcb2e9daaa31ab92a5690d822552"'
     }
     buildTypes {
         release {
