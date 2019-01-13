@@ -2,7 +2,6 @@ package by.alexlevankou.flickrimageapp.network;
 
 import java.io.IOException;
 
-import by.alexlevankou.flickrimageapp.BuildConfig;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;

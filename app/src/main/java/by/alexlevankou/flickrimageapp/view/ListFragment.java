@@ -15,12 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.Date;
 import java.util.List;
 
 import by.alexlevankou.flickrimageapp.R;
 import by.alexlevankou.flickrimageapp.adapter.RecyclerViewAdapter;
-import by.alexlevankou.flickrimageapp.model.Post;
+import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
 import by.alexlevankou.flickrimageapp.viewModel.ListViewModel;
 
 public class ListFragment extends Fragment {
@@ -64,9 +63,9 @@ public class ListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ListViewModel.class);
-        mViewModel.getAllPosts().observe(getActivity(), new Observer<List<Post>>() {
+        mViewModel.getAllPosts().observe(getActivity(), new Observer<List<PostAndPhoto>>() {
             @Override
-            public void onChanged(@Nullable List<Post> posts) {
+            public void onChanged(@Nullable List<PostAndPhoto> posts) {
                 if(posts != null && posts.size() > 0) {
                     showDataList(posts);
                 } else {
@@ -92,7 +91,7 @@ public class ListFragment extends Fragment {
         mListener = null;
     }
 
-    public void showDataList(List<Post> posts) {
+    public void showDataList(List<PostAndPhoto> posts) {
         mRecyclerView.setVisibility(View.VISIBLE);
         mNoDataText.setVisibility(View.GONE);
         mRecycleViewAdapter.setItems(posts);

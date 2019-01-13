@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.alexlevankou.flickrimageapp.R;
-import by.alexlevankou.flickrimageapp.model.Post;
+import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
 import by.alexlevankou.flickrimageapp.view.ListFragment;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private List<Post> values;
+    private List<PostAndPhoto> values;
     private final ListFragment.OnListFragmentInteractionListener mListener;
 
     public RecyclerViewAdapter(Context context, ListFragment.OnListFragmentInteractionListener listener) {
@@ -25,7 +25,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         values = new ArrayList<>();
     }
 
-    public void setItems(List<Post> items)
+    public void setItems(List<PostAndPhoto> items)
     {
         values = items;
         notifyDataSetChanged();
@@ -44,12 +44,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.item.getId());
+                    mListener.onListFragmentInteraction(holder.item.getPost().getId());
                 }
             }
         });
-        holder.titleText.setText(holder.item.getTitle());
-        holder.bodyText.setText(holder.item.getBody());
+        holder.titleText.setText(holder.item.getPost().getTitle());
+        holder.bodyText.setText(holder.item.getPost().getBody());
     }
 
     @Override
@@ -62,7 +62,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final TextView titleText;
         final TextView bodyText;
         //final ImageView image;
-        Post item;
+        PostAndPhoto item;
 
         ViewHolder(View view) {
             super(view);

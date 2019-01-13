@@ -5,16 +5,32 @@ import com.google.gson.annotations.SerializedName;
 public class FlickrResult {
 
     @SerializedName("photos")
-    public FlickrPhotos mPhotosInfo;
+    private FlickrPhotos flickrPhotos;
 
     @SerializedName("stat")
-    public String mStatus;
+    private String status;
+
+    public FlickrPhotos getFlickrPhotos() {
+        return flickrPhotos;
+    }
+
+    public void setFlickrPhotos(FlickrPhotos flickrPhotos) {
+        this.flickrPhotos = flickrPhotos;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @Override
     public String toString() {
-        return "GetRecentPhotosResponse{" +
-                "mPhotosInfo=" + mPhotosInfo +
-                ", mStatus='" + mStatus + '\'' +
+        return "FlickrResult{" +
+                "flickrPhotos=" + flickrPhotos +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

@@ -11,27 +11,27 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import by.alexlevankou.flickrimageapp.model.Post;
+import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
 
 @Dao
-public interface PostDao {
+public interface PostAndPhotoDao {
 
     @Nullable
-    @Query("SELECT * FROM post")
-    LiveData<List<Post>> getAllPosts();
+    @Query("SELECT * FROM postandphoto")
+    LiveData<List<PostAndPhoto>> getAllPosts();
 
-    @Query("SELECT * FROM post WHERE id = :id")
-    LiveData<Post> getPostById(int id);
+    @Query("SELECT * FROM postandphoto WHERE id = :id")
+    LiveData<PostAndPhoto> getPostById(int id);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertPosts(List<Post> posts);
+    void insertPosts(List<PostAndPhoto> posts);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(Post post);
+    void insert(PostAndPhoto postAndPhoto);
 
     @Update
-    void update(Post post);
+    void update(PostAndPhoto postAndPhoto);
 
     @Delete
-    void delete(Post post);
+    void delete(PostAndPhoto postAndPhoto);
 }

@@ -2,6 +2,8 @@ package by.alexlevankou.flickrimageapp.network;
 
 import android.support.annotation.NonNull;
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -34,6 +36,7 @@ public final class JsonPlaceholderService {
     private static Retrofit buildRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

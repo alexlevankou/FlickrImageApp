@@ -1,21 +1,20 @@
 package by.alexlevankou.flickrimageapp.model;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.ColumnInfo;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Entity
 public class Post {
 
-    @PrimaryKey
+    @ColumnInfo(name = "post_id")
     @SerializedName("id")
     @Expose
     private int id;
     @SerializedName("userId")
     @Expose
     private int userId;
+    @ColumnInfo(name = "post_title")
     @SerializedName("title")
     @Expose
     private String title;
