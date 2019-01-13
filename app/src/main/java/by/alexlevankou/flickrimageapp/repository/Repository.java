@@ -30,7 +30,6 @@ public class Repository {
     @Nullable
     public LiveData<List<PostAndPhoto>> getAllPosts() {
         LiveData<List<PostAndPhoto>> mPostsData = mPostDao.getAllPosts();
-        //refreshPosts();
         requestData();
         return mPostsData;
     }
@@ -40,7 +39,7 @@ public class Repository {
         new Thread(r).start();
     }
 
-        public class InsertRunnable implements Runnable {
+    public class InsertRunnable implements Runnable {
 
         PostAndPhoto postAndPhoto;
 
@@ -76,47 +75,4 @@ public class Repository {
             .observeOn(Schedulers.io())
             .subscribe((postAndPhoto) -> { addPost(postAndPhoto); });
     }
-
-//    private void refreshPosts() {
-//        getPhotos();
-//        JsonPlaceholderService.getPlaceholderService().getPosts().enqueue(new Callback<List<Post>>() {
-//            @Override
-//            public void onResponse(Call<List<Post>> call, Response<List<Post>> response) {
-//                Runnable r = new ApiRequestRunnable(response);
-//                new Thread(r).start();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Post>> call, Throwable t) {
-//                boolean d = false;
-//            }
-//        });
-//    }
-//
-//    public class ApiRequestRunnable implements Runnable {
-//
-//        private Response<List<Post>> response;
-//
-//        ApiRequestRunnable(Response<List<Post>>  response) {
-//            this.response = response;
-//        }
-//
-//        public void run() {
-//            mPostDao.insertPosts(response.body());
-//        }
-//    }
-//
-//    private void getPhotos() {
-//        FlickrService.getInstance().getFlickrApi().getRecentPhotos(BuildConfig.FLICKR_KEY ,100, 1, "json",1).enqueue(new Callback<FlickrResult>() {
-//            @Override
-//            public void onResponse(Call<FlickrResult> call, Response<FlickrResult> response) {
-//                boolean a = true;
-//            }
-//
-//            @Override
-//            public void onFailure(Call<FlickrResult> call, Throwable t) {
-//                boolean d = false;
-//            }
-//        });
-//    }
 }

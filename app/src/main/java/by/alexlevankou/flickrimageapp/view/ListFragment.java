@@ -62,7 +62,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ListViewModel.class);
+        mViewModel = ViewModelProviders.of(getActivity()).get(ListViewModel.class);
         mViewModel.getAllPosts().observe(getActivity(), new Observer<List<PostAndPhoto>>() {
             @Override
             public void onChanged(@Nullable List<PostAndPhoto> posts) {

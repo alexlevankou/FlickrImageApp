@@ -20,4 +20,8 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="Text.Accent">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>
