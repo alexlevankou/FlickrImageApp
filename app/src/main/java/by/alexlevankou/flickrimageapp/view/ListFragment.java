@@ -20,9 +20,10 @@ import java.util.List;
 import by.alexlevankou.flickrimageapp.R;
 import by.alexlevankou.flickrimageapp.adapter.RecyclerViewAdapter;
 import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
+import by.alexlevankou.flickrimageapp.presenter.MainContract;
 import by.alexlevankou.flickrimageapp.viewModel.ListViewModel;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements MainContract.View {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;

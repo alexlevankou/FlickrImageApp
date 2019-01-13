@@ -11,11 +11,12 @@ import by.alexlevankou.flickrimageapp.model.Post;
 import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
 import by.alexlevankou.flickrimageapp.network.FlickrService;
 import by.alexlevankou.flickrimageapp.network.JsonPlaceholderService;
+import by.alexlevankou.flickrimageapp.presenter.MainContract;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class Repository {
+public class Repository implements MainContract.Repository {
 
     private PostAndPhotoDao mPostDao;
 
@@ -23,10 +24,12 @@ public class Repository {
         this.mPostDao = postDao;
     }
 
+    @Override
     public LiveData<PostAndPhoto> getPost(int postId) {
         return mPostDao.getPostById(postId);
     }
 
+    @Override
     @Nullable
     public LiveData<List<PostAndPhoto>> getAllPosts() {
         LiveData<List<PostAndPhoto>> mPostsData = mPostDao.getAllPosts();
@@ -34,12 +37,13 @@ public class Repository {
         return mPostsData;
     }
 
+
     private  void addPost(PostAndPhoto postAndPhoto) {
         Runnable r = new InsertRunnable(postAndPhoto);
         new Thread(r).start();
     }
 
-    public class InsertRunnable implements Runnable {
+    private class InsertRunnable implements Runnable {
 
         PostAndPhoto postAndPhoto;
 
