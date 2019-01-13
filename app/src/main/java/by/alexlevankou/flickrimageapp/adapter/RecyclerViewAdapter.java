@@ -49,7 +49,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         });
         holder.titleText.setText(holder.item.getPost().getTitle());
-        holder.bodyText.setText(holder.item.getPost().getBody());
+        holder.photoUrl.setText(holder.item.getPhoto().getUrl());
     }
 
     @Override
@@ -60,15 +60,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         final View view;
         final TextView titleText;
-        final TextView bodyText;
-        //final ImageView image;
+        final TextView photoUrl;
         PostAndPhoto item;
 
         ViewHolder(View view) {
             super(view);
             this.view = view;
             titleText = view.findViewById(R.id.title);
-            bodyText = view.findViewById(R.id.body);
+            photoUrl = view.findViewById(R.id.photo_url);
         }
     }
 }

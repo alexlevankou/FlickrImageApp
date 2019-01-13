@@ -29,7 +29,6 @@ public class ItemFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
         // TODO: Use the ViewModel
-        // https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
     }
 
 }

@@ -46,7 +46,7 @@ public class ListFragment extends Fragment {
         mRecyclerView = view.findViewById(R.id.list);
         mNoDataText = view.findViewById(R.id.no_data_text);
 
-        if (mRecyclerView instanceof RecyclerView) {
+        if (mRecyclerView != null) {
             Context context = view.getContext();
             if (mColumnCount <= 1) {
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(context));

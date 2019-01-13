@@ -23,7 +23,7 @@
                 android:textAppearance="@style/Text.Primary"
                 android:text="Title"/>
             <TextView
-                android:id="@+id/body"
+                android:id="@+id/photo_url"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/Text.Secondary"

@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class Photo {
 
+    private static final String FORMAT_PHOTO_URL = "https://farm%d.staticflickr.com/%s/%s_%s.jpg";
+
     @ColumnInfo(name = "photo_id")
     @SerializedName("id")
     private String id;
@@ -64,6 +66,11 @@ public class Photo {
 
     public void setFarm(int farm) {
         this.farm = farm;
+    }
+
+    public String getUrl() {
+        String str = String.format(FORMAT_PHOTO_URL, farm, server, id, secret);
+        return str;
     }
 
     public String toString() {
