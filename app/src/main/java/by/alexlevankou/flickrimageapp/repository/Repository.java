@@ -53,15 +53,18 @@ public class Repository implements BaseContract.Model {
         postList.clear();
 
         Observable<Post> postObservable = JsonPlaceholderService
-                .getPlaceholderService()
+                .getInstance()
+                .getJsonPlaceholderApi()
                 .getPostsObservable()
+                .subscribeOn(Schedulers.newThread())
                 .flatMapIterable(item->item);
 
         Observable<Photo> photoObservable = FlickrService
                 .getInstance()
                 .getFlickrApi()
                 .getRecentPhotosObservable(BuildConfig.FLICKR_KEY ,100, 1, "json",1)
-                .map(result -> {return result.getFlickrPhotos().getPhotoList();})
+                .subscribeOn(Schedulers.newThread())
+                .map(result -> result.getFlickrPhotos().getPhotoList())
                 .flatMapIterable(item->item);
 
         Observable<FlickrPost> postAndPhotoObservable = Observable.zip(

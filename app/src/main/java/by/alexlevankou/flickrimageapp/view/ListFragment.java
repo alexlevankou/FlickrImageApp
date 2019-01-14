@@ -29,7 +29,6 @@ public class ListFragment extends Fragment implements ListFragmentView {
     private int mColumnCount = 1;
 
     private ListPresenter presenter;
-    private ListViewModel mViewModel;
     private OnListFragmentInteractionListener mListener;
     private RecyclerViewAdapter mRecycleViewAdapter;
 
@@ -67,18 +66,6 @@ public class ListFragment extends Fragment implements ListFragmentView {
         presenter = ViewModelProviders.of(getActivity()).get(ListPresenter.class);
         presenter.attachView(this, getLifecycle());
         presenter.onActivityCreated();
-
-//        mViewModel = ViewModelProviders.of(getActivity()).get(ListViewModel.class);
-//        mViewModel.getAllPosts().observe(getActivity(), new Observer<List<PostAndPhoto>>() {
-//            @Override
-//            public void onChanged(@Nullable List<PostAndPhoto> posts) {
-//                if(posts != null && posts.size() > 0) {
-//                    showDataList(posts);
-//                } else {
-//                    showNoDataText();
-//                }
-//            }
-//        });
     }
 
     @Override

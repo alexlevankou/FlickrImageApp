@@ -1,65 +1,41 @@
 package by.alexlevankou.flickrimageapp.network;
 
-import android.support.annotation.NonNull;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import okhttp3.OkHttpClient;
+import by.alexlevankou.flickrimageapp.BuildConfig;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
 public final class JsonPlaceholderService {
 
-    private static OkHttpClient sClient;
-    private static volatile JsonPlaceholderApi sPlaceholderApi;
-    private static final String BASE_URL = "https://jsonplaceholder.typicode.com";
+    private static JsonPlaceholderService mInstance;
+    private static final String API_URL = BuildConfig.JSONPLACEHOLDER_API;
+    private Retrofit mRetrofit;
 
     private JsonPlaceholderService() {
-    }
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    @NonNull
-    public static JsonPlaceholderApi getPlaceholderService() {
-        JsonPlaceholderApi api = sPlaceholderApi;
-        if (api == null) {
-            synchronized (JsonPlaceholderService.class) {
-                api = sPlaceholderApi;
-                if (api == null) {
-                    api = sPlaceholderApi = buildRetrofit().create(JsonPlaceholderApi.class);
-                }
-            }
-        }
-        return api;
-    }
+        Gson gson = new GsonBuilder().setLenient().create();
 
-    @NonNull
-    private static Retrofit buildRetrofit() {
-        return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+        mRetrofit = new Retrofit.Builder().baseUrl(API_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 
-    @NonNull
-    private static OkHttpClient getClient() {
-        OkHttpClient client = sClient;
-        if (client == null) {
-            synchronized (JsonPlaceholderService.class) {
-                client = sClient;
-                if (client == null) {
-                    client = sClient = buildClient();
-                }
-            }
+    public static JsonPlaceholderService getInstance() {
+        if (mInstance == null) {
+            mInstance = new JsonPlaceholderService();
         }
-        return client;
+        return mInstance;
     }
 
-    @NonNull
-    private static OkHttpClient buildClient() {
-        return new OkHttpClient.Builder()
-                .addInterceptor(new HttpLoggingInterceptor())
-                //.addInterceptor(new ApiKeyInterceptor())
-                .build();
+    public JsonPlaceholderApi getJsonPlaceholderApi() {
+        return mRetrofit.create(JsonPlaceholderApi.class);
     }
 }

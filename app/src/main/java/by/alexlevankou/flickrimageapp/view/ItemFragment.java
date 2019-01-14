@@ -17,14 +17,10 @@ import by.alexlevankou.flickrimageapp.R;
 import by.alexlevankou.flickrimageapp.model.FlickrPost;
 import by.alexlevankou.flickrimageapp.presenter.ItemFragmentView;
 import by.alexlevankou.flickrimageapp.presenter.ItemPresenter;
-import by.alexlevankou.flickrimageapp.presenter.ListPresenter;
-import by.alexlevankou.flickrimageapp.viewModel.ItemViewModel;
 
 public class ItemFragment extends Fragment implements ItemFragmentView {
 
     private ItemPresenter presenter;
-
-    private ItemViewModel mViewModel;
 
     private TextView mTitle;
     private ImageView mPhoto;
@@ -55,20 +51,6 @@ public class ItemFragment extends Fragment implements ItemFragmentView {
             presenter = ViewModelProviders.of(getActivity()).get(ItemPresenter.class);
             presenter.attachView(this, getLifecycle());
             presenter.onActivityCreated(id);
-
-//            mViewModel = ViewModelProviders.of(getActivity()).get(ItemViewModel.class);
-//            mViewModel.getPost(id).observe(getActivity(), new Observer<PostAndPhoto>() {
-//                @Override
-//                public void onChanged(@Nullable PostAndPhoto postAndPhoto) {
-//                    mTitle.setText(postAndPhoto.getPost().getTitle());
-//                    mPhotoTitle.setText(postAndPhoto.getPhoto().getTitle());
-//                    mBody.setText(postAndPhoto.getPost().getBody());
-//                    Picasso
-//                        .with(getActivity())
-//                        .load(postAndPhoto.getPhoto().getUrl())
-//                        .into(mPhoto);
-//                }
-//            });
         }
     }
 

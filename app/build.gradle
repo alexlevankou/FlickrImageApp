@@ -22,7 +22,7 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
 
-        buildConfigField "String", "API_JSONPLACEHOLDER", '"https://jsonplaceholder.typicode.com"'
+        buildConfigField "String", "JSONPLACEHOLDER_API", '"https://jsonplaceholder.typicode.com"'
         buildConfigField "String", "FLICKR_API", '"https://api.flickr.com"'
         buildConfigField "String", "FLICKR_KEY", '"534ddcb2e9daaa31ab92a5690d822552"'
     }
