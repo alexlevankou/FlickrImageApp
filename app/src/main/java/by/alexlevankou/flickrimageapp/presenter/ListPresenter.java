@@ -9,6 +9,8 @@ import io.reactivex.functions.Consumer;
 
 public class ListPresenter extends BasePresenter<ListFragmentView> implements BaseContract.Presenter {
 
+    private static boolean hasData = false;
+
     public void onActivityCreated() {
         view.showLoading();
 
@@ -27,11 +29,13 @@ public class ListPresenter extends BasePresenter<ListFragmentView> implements Ba
                     }
                 });
 
-        model.requestData().subscribe(
-                v -> model.addPost(v),
-                e -> e.printStackTrace(),
-                () -> model.updatePosts()
-                );
+        if(!hasData){
+            model.requestData().subscribe(
+                    v -> model.addPost(v),
+                    e -> e.printStackTrace(),
+                    () -> { model.updatePosts(); hasData = true; }
+            );
+        }
     }
 
     @Override
