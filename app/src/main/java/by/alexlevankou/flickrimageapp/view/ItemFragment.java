@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import by.alexlevankou.flickrimageapp.R;
@@ -26,6 +28,8 @@ public class ItemFragment extends Fragment implements ItemFragmentView {
     private ImageView mPhoto;
     private TextView mPhotoTitle;
     private TextView mBody;
+    private ProgressBar mProgressBar;
+    private TextView mNoPhoto;
 
     public static ItemFragment newInstance() {
         return new ItemFragment();
@@ -38,6 +42,8 @@ public class ItemFragment extends Fragment implements ItemFragmentView {
         mPhoto = view.findViewById(R.id.photo);
         mPhotoTitle = view.findViewById(R.id.photoTitle);
         mBody = view.findViewById(R.id.body);
+        mProgressBar = view.findViewById(R.id.loadingImage);
+        mNoPhoto = view.findViewById(R.id.noPhotoText);
         return view;
     }
 
@@ -62,6 +68,48 @@ public class ItemFragment extends Fragment implements ItemFragmentView {
         Picasso
             .with(getActivity())
             .load(flickrPost.getPhoto().getUrl())
-            .into(mPhoto);
+            .fit()
+            .into(mPhoto, new Callback() {
+                @Override
+                public void onSuccess() {
+                    presenter.onPhotoLoaded();
+                }
+                @Override
+                public void onError() {
+                    presenter.onPhotoError();
+                }
+            });
+    }
+
+    @Override
+    public void showViews(){
+        mTitle.setVisibility(View.VISIBLE);
+        mPhoto.setVisibility(View.VISIBLE);
+        mPhotoTitle.setVisibility(View.VISIBLE);
+        mBody.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideViews(){
+        mTitle.setVisibility(View.INVISIBLE);
+        mPhoto.setVisibility(View.INVISIBLE);
+        mPhotoTitle.setVisibility(View.INVISIBLE);
+        mBody.setVisibility(View.INVISIBLE);
+        mNoPhoto.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void showNoDataText() {
+        mNoPhoto.setVisibility(View.VISIBLE);
     }
 }

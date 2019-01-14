@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -21,7 +22,6 @@ import by.alexlevankou.flickrimageapp.adapter.RecyclerViewAdapter;
 import by.alexlevankou.flickrimageapp.model.FlickrPost;
 import by.alexlevankou.flickrimageapp.presenter.ListFragmentView;
 import by.alexlevankou.flickrimageapp.presenter.ListPresenter;
-import by.alexlevankou.flickrimageapp.viewModel.ListViewModel;
 
 public class ListFragment extends Fragment implements ListFragmentView {
 
@@ -34,6 +34,7 @@ public class ListFragment extends Fragment implements ListFragmentView {
 
     private RecyclerView mRecyclerView;
     private TextView mNoDataText;
+    private ProgressBar mProgressBar;
 
 
     public static ListFragment newInstance() {
@@ -46,6 +47,7 @@ public class ListFragment extends Fragment implements ListFragmentView {
         View view = inflater.inflate(R.layout.list_fragment, container, false);
         mRecyclerView = view.findViewById(R.id.list);
         mNoDataText = view.findViewById(R.id.no_data_text);
+        mProgressBar = view.findViewById(R.id.progressBar);
 
         if (mRecyclerView != null) {
             Context context = view.getContext();
@@ -86,22 +88,25 @@ public class ListFragment extends Fragment implements ListFragmentView {
 
     @Override
     public void showPosts(List<FlickrPost> posts) {
-        if(posts != null && posts.size() > 0) {
-            showDataList(posts);
-        } else {
-            showNoDataText();
-        }
-    }
-
-    public void showDataList(List<FlickrPost> posts) {
         mRecyclerView.setVisibility(View.VISIBLE);
         mNoDataText.setVisibility(View.GONE);
         mRecycleViewAdapter.setItems(posts);
     }
 
+    @Override
     public void showNoDataText() {
         mRecyclerView.setVisibility(View.GONE);
         mNoDataText.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showLoading() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        mProgressBar.setVisibility(View.GONE);
     }
 
     public interface OnListFragmentInteractionListener {

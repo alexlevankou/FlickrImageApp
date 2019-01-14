@@ -6,4 +6,7 @@ import by.alexlevankou.flickrimageapp.model.FlickrPost;
 
 public interface ListFragmentView extends BaseContract.View {
     void showPosts(List<FlickrPost> flickrPosts);
+    void showNoDataText();
+    void showLoading();
+    void hideLoading();
 }

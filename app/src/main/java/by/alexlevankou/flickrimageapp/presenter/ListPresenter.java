@@ -10,14 +10,20 @@ import io.reactivex.functions.Consumer;
 public class ListPresenter extends BasePresenter<ListFragmentView> implements BaseContract.Presenter {
 
     public void onActivityCreated() {
-        // loading here
+        view.showLoading();
+
         BaseContract.Model model = App.getInstance().getRepository();
         model.getAllPosts()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<FlickrPost>>() {
                     @Override
                     public void accept(List<FlickrPost> posts) throws Exception {
-                        view.showPosts(posts);
+                        if(posts != null && posts.size() > 0) {
+                            view.hideLoading();
+                            view.showPosts(posts);
+                        } else {
+                            view.showNoDataText();
+                        }
                     }
                 });
 

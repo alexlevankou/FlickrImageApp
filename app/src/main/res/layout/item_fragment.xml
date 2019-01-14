@@ -17,6 +17,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="TextView"
+        android:textAppearance="@style/Text.Primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -51,6 +52,23 @@
             android:background="@color/transparent_black"
             android:text="TextView"
             android:textAppearance="@style/Text.Accent"/>
+
+        <TextView
+            android:id="@+id/noPhotoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/transparent_black"
+            android:text="@string/no_photo"
+            android:textAppearance="@style/Text.Secondary"/>
+
+        <ProgressBar
+            android:id="@+id/loadingImage"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
     </RelativeLayout>
 
     <TextView
@@ -61,6 +79,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="TextView"
+        android:textAppearance="@style/Text.Secondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>

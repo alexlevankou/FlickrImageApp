@@ -8,7 +8,9 @@ import io.reactivex.functions.Consumer;
 public class ItemPresenter extends BasePresenter<ItemFragmentView> implements BaseContract.Presenter {
 
     public void onActivityCreated(int id) {
-        // loading here
+        view.hideViews();
+        view.showLoading();
+
         BaseContract.Model model = App.getInstance().getRepository();
         model.getPost(id)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -18,6 +20,16 @@ public class ItemPresenter extends BasePresenter<ItemFragmentView> implements Ba
                         view.showPost(post);
                     }
                 });
+    }
+
+    public void onPhotoLoaded() {
+        view.hideLoading();
+        view.showViews();
+    }
+
+    public void onPhotoError() {
+        view.hideLoading();
+        view.showNoDataText();
     }
 
     @Override
