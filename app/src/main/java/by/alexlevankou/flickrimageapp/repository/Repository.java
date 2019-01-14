@@ -1,63 +1,56 @@
 package by.alexlevankou.flickrimageapp.repository;
 
-import android.arch.lifecycle.LiveData;
 import android.support.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import by.alexlevankou.flickrimageapp.BuildConfig;
+import by.alexlevankou.flickrimageapp.model.FlickrPost;
 import by.alexlevankou.flickrimageapp.model.Photo;
 import by.alexlevankou.flickrimageapp.model.Post;
-import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
 import by.alexlevankou.flickrimageapp.network.FlickrService;
 import by.alexlevankou.flickrimageapp.network.JsonPlaceholderService;
-import by.alexlevankou.flickrimageapp.presenter.MainContract;
+import by.alexlevankou.flickrimageapp.presenter.BaseContract;
+import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class Repository implements MainContract.Repository {
+public class Repository implements BaseContract.Model {
 
     private PostAndPhotoDao mPostDao;
+    private List<FlickrPost> postList = new ArrayList<>();
 
     public Repository(PostAndPhotoDao postDao) {
         this.mPostDao = postDao;
     }
 
     @Override
-    public LiveData<PostAndPhoto> getPost(int postId) {
+    public Flowable<FlickrPost> getPost(int postId) {
         return mPostDao.getPostById(postId);
     }
 
     @Override
     @Nullable
-    public LiveData<List<PostAndPhoto>> getAllPosts() {
-        LiveData<List<PostAndPhoto>> mPostsData = mPostDao.getAllPosts();
-        requestData();
-        return mPostsData;
+    public Flowable<List<FlickrPost>> getAllPosts() {
+        return mPostDao.getAllPosts();
     }
 
-
-    private  void addPost(PostAndPhoto postAndPhoto) {
-        Runnable r = new InsertRunnable(postAndPhoto);
-        new Thread(r).start();
+    @Override
+    public void addPost(FlickrPost flickrPost) {
+        flickrPost.setId(flickrPost.getPost().getId());
+        postList.add(flickrPost);
     }
 
-    private class InsertRunnable implements Runnable {
-
-        PostAndPhoto postAndPhoto;
-
-        InsertRunnable(PostAndPhoto postAndPhoto) {
-            postAndPhoto.setId(postAndPhoto.getPost().getId());
-            this.postAndPhoto = postAndPhoto;
-        }
-
-        public void run() {
-            mPostDao.insert(postAndPhoto);
-        }
+    @Override
+    public void updatePosts() {
+        new Thread(() -> mPostDao.insertPosts(postList)).start();
     }
 
-    private void requestData() {
+    @Override
+    public Observable<FlickrPost> requestData() {
+        postList.clear();
 
         Observable<Post> postObservable = JsonPlaceholderService
                 .getPlaceholderService()
@@ -71,12 +64,13 @@ public class Repository implements MainContract.Repository {
                 .map(result -> {return result.getFlickrPhotos().getPhotoList();})
                 .flatMapIterable(item->item);
 
-        Observable.zip(
+        Observable<FlickrPost> postAndPhotoObservable = Observable.zip(
                 postObservable,
                 photoObservable,
-                PostAndPhoto::new)
-            .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
-            .subscribe((postAndPhoto) -> { addPost(postAndPhoto); });
+                FlickrPost::new)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(Schedulers.newThread());
+
+        return postAndPhotoObservable;
     }
 }

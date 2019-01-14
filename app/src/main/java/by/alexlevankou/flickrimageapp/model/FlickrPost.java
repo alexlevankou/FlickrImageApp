@@ -5,7 +5,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 @Entity
-public class PostAndPhoto {
+public class FlickrPost {
 
     @PrimaryKey
     private int id;
@@ -16,7 +16,7 @@ public class PostAndPhoto {
     @Embedded(prefix = "photo")
     private Photo photo;
 
-    public PostAndPhoto(Post post, Photo photo) {
+    public FlickrPost(Post post, Photo photo) {
         this.post = post;
         this.photo = photo;
     }

@@ -1,6 +1,5 @@
 package by.alexlevankou.flickrimageapp.repository;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -11,27 +10,28 @@ import android.support.annotation.Nullable;
 
 import java.util.List;
 
-import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
+import by.alexlevankou.flickrimageapp.model.FlickrPost;
+import io.reactivex.Flowable;
 
 @Dao
 public interface PostAndPhotoDao {
 
     @Nullable
-    @Query("SELECT * FROM postandphoto")
-    LiveData<List<PostAndPhoto>> getAllPosts();
+    @Query("SELECT * FROM FlickrPost")
+    Flowable<List<FlickrPost>> getAllPosts();
 
-    @Query("SELECT * FROM postandphoto WHERE id = :id")
-    LiveData<PostAndPhoto> getPostById(int id);
+    @Query("SELECT * FROM FlickrPost WHERE id = :id")
+    Flowable<FlickrPost> getPostById(int id);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insertPosts(List<PostAndPhoto> posts);
+    void insertPosts(List<FlickrPost> posts);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(PostAndPhoto postAndPhoto);
+    void insert(FlickrPost flickrPost);
 
     @Update
-    void update(PostAndPhoto postAndPhoto);
+    void update(FlickrPost flickrPost);
 
     @Delete
-    void delete(PostAndPhoto postAndPhoto);
+    void delete(FlickrPost flickrPost);
 }

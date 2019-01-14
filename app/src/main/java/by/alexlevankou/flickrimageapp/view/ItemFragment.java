@@ -1,6 +1,5 @@
 package by.alexlevankou.flickrimageapp.view;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,10 +14,15 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import by.alexlevankou.flickrimageapp.R;
-import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
+import by.alexlevankou.flickrimageapp.model.FlickrPost;
+import by.alexlevankou.flickrimageapp.presenter.ItemFragmentView;
+import by.alexlevankou.flickrimageapp.presenter.ItemPresenter;
+import by.alexlevankou.flickrimageapp.presenter.ListPresenter;
 import by.alexlevankou.flickrimageapp.viewModel.ItemViewModel;
 
-public class ItemFragment extends Fragment {
+public class ItemFragment extends Fragment implements ItemFragmentView {
+
+    private ItemPresenter presenter;
 
     private ItemViewModel mViewModel;
 
@@ -48,19 +52,34 @@ public class ItemFragment extends Fragment {
         Bundle extras = getArguments();
         if(extras != null) {
             int id = extras.getInt("id");
-            mViewModel = ViewModelProviders.of(getActivity()).get(ItemViewModel.class);
-            mViewModel.getPost(id).observe(getActivity(), new Observer<PostAndPhoto>() {
-                @Override
-                public void onChanged(@Nullable PostAndPhoto postAndPhoto) {
-                    mTitle.setText(postAndPhoto.getPost().getTitle());
-                    mPhotoTitle.setText(postAndPhoto.getPhoto().getTitle());
-                    mBody.setText(postAndPhoto.getPost().getBody());
-                    Picasso
-                        .with(getActivity())
-                        .load(postAndPhoto.getPhoto().getUrl())
-                        .into(mPhoto);
-                }
-            });
+            presenter = ViewModelProviders.of(getActivity()).get(ItemPresenter.class);
+            presenter.attachView(this, getLifecycle());
+            presenter.onActivityCreated(id);
+
+//            mViewModel = ViewModelProviders.of(getActivity()).get(ItemViewModel.class);
+//            mViewModel.getPost(id).observe(getActivity(), new Observer<PostAndPhoto>() {
+//                @Override
+//                public void onChanged(@Nullable PostAndPhoto postAndPhoto) {
+//                    mTitle.setText(postAndPhoto.getPost().getTitle());
+//                    mPhotoTitle.setText(postAndPhoto.getPhoto().getTitle());
+//                    mBody.setText(postAndPhoto.getPost().getBody());
+//                    Picasso
+//                        .with(getActivity())
+//                        .load(postAndPhoto.getPhoto().getUrl())
+//                        .into(mPhoto);
+//                }
+//            });
         }
+    }
+
+    @Override
+    public void showPost(FlickrPost flickrPost) {
+        mTitle.setText(flickrPost.getPost().getTitle());
+        mPhotoTitle.setText(flickrPost.getPhoto().getTitle());
+        mBody.setText(flickrPost.getPost().getBody());
+        Picasso
+            .with(getActivity())
+            .load(flickrPost.getPhoto().getUrl())
+            .into(mPhoto);
     }
 }

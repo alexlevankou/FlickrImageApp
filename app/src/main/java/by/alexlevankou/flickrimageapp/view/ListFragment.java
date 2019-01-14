@@ -1,6 +1,5 @@
 package by.alexlevankou.flickrimageapp.view;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -19,15 +18,17 @@ import java.util.List;
 
 import by.alexlevankou.flickrimageapp.R;
 import by.alexlevankou.flickrimageapp.adapter.RecyclerViewAdapter;
-import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
-import by.alexlevankou.flickrimageapp.presenter.MainContract;
+import by.alexlevankou.flickrimageapp.model.FlickrPost;
+import by.alexlevankou.flickrimageapp.presenter.ListFragmentView;
+import by.alexlevankou.flickrimageapp.presenter.ListPresenter;
 import by.alexlevankou.flickrimageapp.viewModel.ListViewModel;
 
-public class ListFragment extends Fragment implements MainContract.View {
+public class ListFragment extends Fragment implements ListFragmentView {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
 
+    private ListPresenter presenter;
     private ListViewModel mViewModel;
     private OnListFragmentInteractionListener mListener;
     private RecyclerViewAdapter mRecycleViewAdapter;
@@ -63,17 +64,21 @@ public class ListFragment extends Fragment implements MainContract.View {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(getActivity()).get(ListViewModel.class);
-        mViewModel.getAllPosts().observe(getActivity(), new Observer<List<PostAndPhoto>>() {
-            @Override
-            public void onChanged(@Nullable List<PostAndPhoto> posts) {
-                if(posts != null && posts.size() > 0) {
-                    showDataList(posts);
-                } else {
-                    showNoDataText();
-                }
-            }
-        });
+        presenter = ViewModelProviders.of(getActivity()).get(ListPresenter.class);
+        presenter.attachView(this, getLifecycle());
+        presenter.onActivityCreated();
+
+//        mViewModel = ViewModelProviders.of(getActivity()).get(ListViewModel.class);
+//        mViewModel.getAllPosts().observe(getActivity(), new Observer<List<PostAndPhoto>>() {
+//            @Override
+//            public void onChanged(@Nullable List<PostAndPhoto> posts) {
+//                if(posts != null && posts.size() > 0) {
+//                    showDataList(posts);
+//                } else {
+//                    showNoDataText();
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -92,7 +97,16 @@ public class ListFragment extends Fragment implements MainContract.View {
         mListener = null;
     }
 
-    public void showDataList(List<PostAndPhoto> posts) {
+    @Override
+    public void showPosts(List<FlickrPost> posts) {
+        if(posts != null && posts.size() > 0) {
+            showDataList(posts);
+        } else {
+            showNoDataText();
+        }
+    }
+
+    public void showDataList(List<FlickrPost> posts) {
         mRecyclerView.setVisibility(View.VISIBLE);
         mNoDataText.setVisibility(View.GONE);
         mRecycleViewAdapter.setItems(posts);

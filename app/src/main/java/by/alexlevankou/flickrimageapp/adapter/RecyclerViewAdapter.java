@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import by.alexlevankou.flickrimageapp.R;
-import by.alexlevankou.flickrimageapp.model.PostAndPhoto;
+import by.alexlevankou.flickrimageapp.model.FlickrPost;
 import by.alexlevankou.flickrimageapp.view.ListFragment;
 
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private List<PostAndPhoto> values;
+    private List<FlickrPost> values;
     private final ListFragment.OnListFragmentInteractionListener mListener;
 
     public RecyclerViewAdapter(Context context, ListFragment.OnListFragmentInteractionListener listener) {
@@ -25,7 +25,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         values = new ArrayList<>();
     }
 
-    public void setItems(List<PostAndPhoto> items)
+    public void setItems(List<FlickrPost> items)
     {
         values = items;
         notifyDataSetChanged();
@@ -61,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final View view;
         final TextView titleText;
         final TextView photoUrl;
-        PostAndPhoto item;
+        FlickrPost item;
 
         ViewHolder(View view) {
             super(view);
