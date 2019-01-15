@@ -23,7 +23,7 @@ public interface PostAndPhotoDao {
     @Query("SELECT * FROM FlickrPost WHERE id = :id")
     Flowable<FlickrPost> getPostById(int id);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertPosts(List<FlickrPost> posts);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

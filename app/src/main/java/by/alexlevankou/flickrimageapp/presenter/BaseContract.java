@@ -12,8 +12,6 @@ public class BaseContract {
     }
 
     public interface Presenter {
-        //void onActivityCreated();
-        void onDestroy();
     }
 
     public interface Model {

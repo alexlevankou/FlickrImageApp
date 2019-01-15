@@ -3,6 +3,7 @@ package by.alexlevankou.flickrimageapp.presenter;
 import by.alexlevankou.flickrimageapp.App;
 import by.alexlevankou.flickrimageapp.model.FlickrPost;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
 public class ItemPresenter extends BasePresenter<ItemFragmentView> implements BaseContract.Presenter {
@@ -12,14 +13,17 @@ public class ItemPresenter extends BasePresenter<ItemFragmentView> implements Ba
         view.showLoading();
 
         BaseContract.Model model = App.getInstance().getRepository();
-        model.getPost(id)
+        Disposable disposable = model.getPost(id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<FlickrPost>() {
                     @Override
                     public void accept(FlickrPost post) throws Exception {
-                        view.showPost(post);
+                        if(post != null) {
+                            view.showPost(post);
+                        }
                     }
                 });
+        disposables.add(disposable);
     }
 
     public void onPhotoLoaded() {
@@ -30,10 +34,5 @@ public class ItemPresenter extends BasePresenter<ItemFragmentView> implements Ba
     public void onPhotoError() {
         view.hideLoading();
         view.showNoDataText();
-    }
-
-    @Override
-    public void onDestroy() {
-        view = null;
     }
 }

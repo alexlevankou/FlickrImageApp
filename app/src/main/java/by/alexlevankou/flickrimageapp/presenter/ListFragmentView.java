@@ -9,4 +9,5 @@ public interface ListFragmentView extends BaseContract.View {
     void showNoDataText();
     void showLoading();
     void hideLoading();
+    void stopRefreshing();
 }

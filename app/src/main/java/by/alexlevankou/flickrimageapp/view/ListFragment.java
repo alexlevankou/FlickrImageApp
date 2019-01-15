@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,6 +36,7 @@ public class ListFragment extends Fragment implements ListFragmentView {
     private RecyclerView mRecyclerView;
     private TextView mNoDataText;
     private ProgressBar mProgressBar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     public static ListFragment newInstance() {
@@ -48,6 +50,7 @@ public class ListFragment extends Fragment implements ListFragmentView {
         mRecyclerView = view.findViewById(R.id.list);
         mNoDataText = view.findViewById(R.id.no_data_text);
         mProgressBar = view.findViewById(R.id.progressBar);
+        mSwipeRefreshLayout = view.findViewById(R.id.swipe_container);
 
         if (mRecyclerView != null) {
             Context context = view.getContext();
@@ -68,6 +71,9 @@ public class ListFragment extends Fragment implements ListFragmentView {
         presenter = ViewModelProviders.of(getActivity()).get(ListPresenter.class);
         presenter.attachView(this, getLifecycle());
         presenter.onActivityCreated();
+        mSwipeRefreshLayout.setOnRefreshListener(() -> {
+            presenter.onLoadData();
+        });
     }
 
     @Override
@@ -109,7 +115,14 @@ public class ListFragment extends Fragment implements ListFragmentView {
         mProgressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void stopRefreshing(){
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(int id);
     }
+
+
 }
