@@ -2,4 +2,12 @@
     <string name="app_name">FlickrImageApp</string>
     <string name="no_list_data">No data</string>
     <string name="no_photo">No data</string>
+
+    <string name="bundle_id">id</string>
+    <string name="list_fragment_tag">LIST_FRAGMENT</string>
+    <string name="item_fragment_tag">ITEM_FRAGMENT</string>
+
+    <string name="list_fragment_interaction_interface_not_implemented"> must implement OnListFragmentInteractionListener</string>
+
+
 </resources>

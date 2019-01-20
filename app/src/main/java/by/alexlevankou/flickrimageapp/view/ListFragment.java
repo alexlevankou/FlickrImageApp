@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -26,9 +26,7 @@ import by.alexlevankou.flickrimageapp.presenter.ListPresenter;
 
 public class ListFragment extends Fragment implements ListFragmentView {
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 1;
-
+    private FragmentActivity mActivity;
     private ListPresenter presenter;
     private OnListFragmentInteractionListener mListener;
     private RecyclerViewAdapter mRecycleViewAdapter;
@@ -43,6 +41,20 @@ public class ListFragment extends Fragment implements ListFragmentView {
         return new ListFragment();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof FragmentActivity){
+            mActivity =(FragmentActivity) context;
+        }
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + getResources().getString(R.string.list_fragment_interaction_interface_not_implemented));
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,11 +66,7 @@ public class ListFragment extends Fragment implements ListFragmentView {
 
         if (mRecyclerView != null) {
             Context context = view.getContext();
-            if (mColumnCount <= 1) {
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                mRecyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
             mRecycleViewAdapter = new RecyclerViewAdapter(context, mListener);
             mRecyclerView.setAdapter(mRecycleViewAdapter);
         }
@@ -68,7 +76,7 @@ public class ListFragment extends Fragment implements ListFragmentView {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        presenter = ViewModelProviders.of(getActivity()).get(ListPresenter.class);
+        presenter = ViewModelProviders.of(mActivity).get(ListPresenter.class);
         presenter.attachView(this, getLifecycle());
         presenter.onActivityCreated();
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
@@ -77,18 +85,9 @@ public class ListFragment extends Fragment implements ListFragmentView {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener");
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
+        mActivity = null;
         mListener = null;
     }
 
@@ -123,6 +122,4 @@ public class ListFragment extends Fragment implements ListFragmentView {
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(int id);
     }
-
-
 }

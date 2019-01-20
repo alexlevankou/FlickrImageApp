@@ -8,15 +8,14 @@ import by.alexlevankou.flickrimageapp.repository.Repository;
 
 public class App extends Application {
 
-    public static App mInstance;
-    private PostAndPhotoDatabase mDatabase;
+    private static App mInstance;
     private Repository mRepository;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-        mDatabase = Room.databaseBuilder(this, PostAndPhotoDatabase.class, "flickr_database")
+        PostAndPhotoDatabase mDatabase = Room.databaseBuilder(this, PostAndPhotoDatabase.class, "flickr_database")
                 .fallbackToDestructiveMigration()
                 .build();
         mRepository = new Repository(mDatabase.postAndPhotoDao());
@@ -24,10 +23,6 @@ public class App extends Application {
 
     public static App getInstance() {
         return mInstance;
-    }
-
-    public PostAndPhotoDatabase getDatabase() {
-        return mDatabase;
     }
 
     public Repository getRepository() {

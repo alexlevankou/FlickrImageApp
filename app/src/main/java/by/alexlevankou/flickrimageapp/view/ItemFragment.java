@@ -1,10 +1,12 @@
 package by.alexlevankou.flickrimageapp.view;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import by.alexlevankou.flickrimageapp.presenter.ItemPresenter;
 public class ItemFragment extends Fragment implements ItemFragmentView {
 
     private ItemPresenter presenter;
+    private FragmentActivity mActivity;
 
     private TextView mTitle;
     private ImageView mPhoto;
@@ -33,6 +36,15 @@ public class ItemFragment extends Fragment implements ItemFragmentView {
 
     public static ItemFragment newInstance() {
         return new ItemFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof FragmentActivity){
+            mActivity =(FragmentActivity) context;
+        }
     }
 
     @Override
@@ -53,11 +65,17 @@ public class ItemFragment extends Fragment implements ItemFragmentView {
 
         Bundle extras = getArguments();
         if(extras != null) {
-            int id = extras.getInt("id");
-            presenter = ViewModelProviders.of(getActivity()).get(ItemPresenter.class);
+            int id = extras.getInt(getResources().getString(R.string.bundle_id));
+            presenter = ViewModelProviders.of(mActivity).get(ItemPresenter.class);
             presenter.attachView(this, getLifecycle());
             presenter.onActivityCreated(id);
         }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mActivity = null;
     }
 
     @Override

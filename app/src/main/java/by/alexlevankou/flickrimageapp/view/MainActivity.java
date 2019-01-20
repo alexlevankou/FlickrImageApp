@@ -6,25 +6,25 @@ import android.support.v7.app.AppCompatActivity;
 
 import by.alexlevankou.flickrimageapp.presenter.BaseContract;
 
-public class MainActivity extends AppCompatActivity implements BaseContract.View, ListFragment.OnListFragmentInteractionListener {
+import by.alexlevankou.flickrimageapp.R;
 
-    private final static String LIST_FRAGMENT_TAG = "LIST_FRAGMENT";
-    private final static String ITEM_FRAGMENT_TAG = "ITEM_FRAGMENT";
+
+public class MainActivity extends AppCompatActivity implements BaseContract.View, ListFragment.OnListFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(by.alexlevankou.flickrimageapp.R.layout.main_activity);
         if (savedInstanceState == null) {
-            showFragment(ListFragment.newInstance(), LIST_FRAGMENT_TAG);
+            showFragment(ListFragment.newInstance(), getResources().getString(R.string.list_fragment_tag));
         }
     }
 
     @Override
     public void onBackPressed() {
-        Fragment itemFragment = getSupportFragmentManager().findFragmentByTag(ITEM_FRAGMENT_TAG);
+        Fragment itemFragment = getSupportFragmentManager().findFragmentByTag(getResources().getString(R.string.item_fragment_tag));
         if (itemFragment != null && itemFragment.isVisible()) {
-            showFragment(ListFragment.newInstance(), LIST_FRAGMENT_TAG);
+            showFragment(ListFragment.newInstance(), getResources().getString(R.string.list_fragment_tag));
         } else {
             finishAndRemoveTask();
         }
@@ -33,10 +33,10 @@ public class MainActivity extends AppCompatActivity implements BaseContract.View
     @Override
     public void onListFragmentInteraction(int id) {
         Bundle bundle = new Bundle();
-        bundle.putInt("id", id);
+        bundle.putInt(getResources().getString(R.string.bundle_id), id);
         Fragment itemFragment = ItemFragment.newInstance();
         itemFragment.setArguments(bundle);
-        showFragment(itemFragment, ITEM_FRAGMENT_TAG);
+        showFragment(itemFragment, getResources().getString(R.string.item_fragment_tag));
     }
 
     private void showFragment(Fragment fragment, String tag) {
