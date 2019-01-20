@@ -67,7 +67,7 @@ public class ListFragment extends Fragment implements ListFragmentView {
         if (mRecyclerView != null) {
             Context context = view.getContext();
             mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mRecycleViewAdapter = new RecyclerViewAdapter(context, mListener);
+            mRecycleViewAdapter = new RecyclerViewAdapter(mListener);
             mRecyclerView.setAdapter(mRecycleViewAdapter);
         }
         return view;

@@ -67,13 +67,11 @@ public class Repository implements BaseContract.Model {
                 .map(result -> result.getFlickrPhotos().getPhotoList())
                 .flatMapIterable(item->item);
 
-        Observable<FlickrPost> postAndPhotoObservable = Observable.zip(
+        return Observable.zip(
                 postObservable,
                 photoObservable,
                 FlickrPost::new)
             .subscribeOn(Schedulers.newThread())
             .observeOn(Schedulers.newThread());
-
-        return postAndPhotoObservable;
     }
 }

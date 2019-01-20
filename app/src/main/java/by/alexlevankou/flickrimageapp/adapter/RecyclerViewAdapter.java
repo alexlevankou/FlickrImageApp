@@ -20,7 +20,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<FlickrPost> values;
     private final ListFragment.OnListFragmentInteractionListener mListener;
 
-    public RecyclerViewAdapter(Context context, ListFragment.OnListFragmentInteractionListener listener) {
+    public RecyclerViewAdapter(ListFragment.OnListFragmentInteractionListener listener) {
         mListener = listener;
         values = new ArrayList<>();
     }
